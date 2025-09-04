@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disney+ Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --disney-blue: #113f84;
+            --disney-red: #110f18;
+            --disney-white: #f9f9f9;
+            --disney-gray: #333333;
+            --disney-light-gray: #444444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: var(--disney-red);
+            color: var(--disney-white);
+            overflow-x: hidden;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            background-color: var(--disney-blue);
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li:hover {
+            color: #ccc;
+        }
+        
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-right: 20px;
+        }
+        
+        .search-container input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 8px 15px 8px 35px;
+            color: white;
+            width: 200px;
+            transition: width 0.3s;
+        }
+        
+        .search-container input:focus {
+            width: 250px;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+        
+        .user-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            background-color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 1s;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.2));
+        }
+        
+        .hero-content {
+            position: absolute;
+            bottom: 100px;
+            left: 50px;
+            max-width: 500px;
+            z-index: 10;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .hero-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .rating {
+            color: #46d369;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        
+        .year, .hd {
+            margin-right: 20px;
+        }
+        
+        .hd {
+            border: 1px solid #aaa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .hero-description {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: white;
+            color: black;
+        }
+        
+        .btn-primary:hover {
+            background-color: #ccc;
+        }
+        
+        .btn-secondary {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: white;
+            border: 1px solid #888;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(109, 109, 110, 0.9);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            padding: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .see-all {
+            color: #ccc;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+        }
+        
+        .content-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .content-card img {
+            width: 100%;
+            display: block;
+        }
+        
+        .content-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .content-card:hover .content-overlay {
+            opacity: 1;
+        }
+        
+        .content-info {
+            padding: 10px 0;
+        }
+        
+        .content-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .content-rating {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .content-rating i {
+            color: #f5c518;
+            margin-right: 5px;
+        }
+        
+        /* Player View */
+        .player-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .player-header {
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-bottom: 1px solid #333;
+        }
+        
+        .player-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .player-controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .stream-options {
+            padding: 20px 40px;
+            display: flex;
+            gap: 15px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .stream-btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            background-color: #333;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .stream-btn.active {
+            background-color: var(--disney-blue);
+        }
+        
+        .stream-btn:hover {
+            background-color: #555;
+        }
+        
+        .video-container {
+            width: 100%;
+            height: calc(100% - 150px);
+            position: relative;
+        }
+        
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Login/Register Forms */
+        .auth-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://lumiere-a.akamaihd.net/v1/images/image_3aab7973.jpeg');
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .auth-form {
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 8px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+        
+        .auth-logo {
+            background-color: var(--disney-blue);
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 30px;
+            margin: 0 auto 20px;
+        }
+        
+        .auth-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .auth-subtitle {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--disney-blue);
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--disney-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .auth-btn:hover {
+            background-color: #0f3a75;
+        }
+        
+        .auth-footer {
+            margin-top: 25px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .auth-link {
+            color: var(--disney-blue);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        footer {
+            border-top: 1px solid #333;
+            padding: 40px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .footer-column ul li:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo .logo {
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+        }
+        
+        .footer-logo span {
+            margin-left: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .hero-title {
+                font-size: 2.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            header {
+                padding: 15px 20px;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .hero-content {
+                left: 20px;
+                bottom: 50px;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .content-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-content {
+                max-width: 80%;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .search-container input {
+                width: 150px;
+            }
+            
+            .search-container input:focus {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Forms -->
+    <div class="auth-container" id="loginForm">
+        <div class="auth-form">
+            <div class="auth-logo">D+</div>
+            <h1 class="auth-title">Sign in</h1>
+            <p class="auth-subtitle">to continue to Disney+</p>
+            
+            <form id="loginFormElement">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="auth-btn">Sign In</button>
+            </form>
+            
+            <p class="auth-footer">
+                New to Disney+? <span class="auth-link" id="showRegister">Sign up</span>
+            </p>
+        </div>
+    </div>
+    
+    <div class="auth-container" id="registerForm" style="display: none;">
+        <div class="auth-form">
+            <div class="auth-logo">D+</div>
+            <h1 class="auth-title">Create account</h1>
+            <p class="auth-subtitle">to continue to Disney+</p>
+            
+            <form id="registerFormElement">
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="auth-btn">Create Account</button>
+            </form>
+            
+            <p class="auth-footer">
+                Already have an account? <span class="auth-link" id="showLogin">Sign in</span>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Main App (Hidden until login) -->
+    <div id="mainApp" style="display: none;">
+        <!-- Header -->
+        <header>
+            <div class="logo-container">
+                <div class="logo">D+</div>
+                <div class="logo-text" id="homeLink">Disney+</div>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li id="homeNav"><i class="fas fa-home"></i> Home</li>
+                    <li>Search</li>
+                    <li>Watchlist</li>
+                    <li>Movies</li>
+                    <li>Series</li>
+                </ul>
+            </nav>
+            
+            <div class="nav-icons">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search">
+                </div>
+                <i class="fas fa-bell" style="margin-right: 20px; cursor: pointer;"></i>
+                <div class="user-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <img src="https://image.tmdb.org/t/p/original//3V4kLQg0kSqPLctI5ziYWabAZYF.jpg" alt="Featured Movie" class="hero-image" id="heroImage">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title" id="heroTitle">The Lion King</h1>
+                <div class="hero-info">
+                    <span class="rating" id="heroRating">98% Match</span>
+                    <span class="year" id="heroYear">2019</span>
+                    <span class="hd">HD</span>
+                </div>
+                <p class="hero-description" id="heroDescription">After the murder of his father, a young lion prince flees his kingdom only to learn the true meaning of responsibility and bravery.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="watchNowBtn">
+                        <i class="fas fa-play"></i> Watch Now
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-plus"></i> Add to Watchlist
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Disney Originals -->
+        <section class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">Disney Originals</h2>
+                <span class="see-all">See All <i class="fas fa-chevron-right"></i></span>
+            </div>
+            <div class="content-grid" id="disneyOriginals">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Trending Now -->
+        <section class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">Trending Now</h2>
+                <span class="see-all">See All <i class="fas fa-chevron-right"></i></span>
+            </div>
+            <div class="content-grid" id="trendingNow">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li>Home</li>
+                        <li>Movies</li>
+                        <li>Series</li>
+                        <li>Watchlist</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li>Terms of Use</li>
+                        <li>Privacy Policy</li>
+                        <li>Cookie Policy</li>
+                        <li>Interest-Based Ads</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li>Help Center</li>
+                        <li>Contact Us</li>
+                        <li>Device Support</li>
+                        <li>Account</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Disney+ Apps</h3>
+                    <ul>
+                        <li>Disney+ for iOS</li>
+                        <li>Disney+ for Android</li>
+                        <li>Disney+ for Roku</li>
+                        <li>Disney+ for Apple TV</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <div class="logo">D+</div>
+                    <span>Disney+</span>
+                </div>
+                <div>© 2023 Disney and its related entities. All Rights Reserved.</div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Player View -->
+    <div class="player-container" id="playerContainer">
+        <div class="player-header">
+            <div class="player-title" id="playerTitle">Movie Title</div>
+            <div class="player-controls">
+                <button class="btn btn-secondary" id="closePlayer">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+        
+        <div class="stream-options">
+            <button class="stream-btn active" data-source="vidsrc">Vidsrc Stream</button>
+            <button class="stream-btn" data-source="2embed">2Embed Stream</button>
+            <button class="stream-btn" data-source="youtube">YouTube Trailer</button>
+        </div>
+        
+        <div class="video-container">
+            <iframe id="videoFrame" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+    
+    <script>
+        // API Configuration
+        const API_KEY = 'eb2ee3da5476ad4efc87554de737c77c';
+        const BASE_URL = 'https://api.themoviedb.org/3';
+        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
+        
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const mainApp = document.getElementById('mainApp');
+        const playerContainer = document.getElementById('playerContainer');
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+        const loginFormElement = document.getElementById('loginFormElement');
+        const registerFormElement = document.getElementById('registerFormElement');
+        const homeLink = document.getElementById('homeLink');
+        const watchNowBtn = document.getElementById('watchNowBtn');
+        const closePlayer = document.getElementById('closePlayer');
+        const searchInput = document.getElementById('searchInput');
+        const streamButtons = document.querySelectorAll('.stream-btn');
+        
+        // State
+        let currentUser = null;
+        let featuredMovies = [];
+        let disneyMovies = [];
+        let selectedMovie = null;
+        let currentStreamSource = 'vidsrc';
+        let featuredIndex = 0;
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up event listeners
+            showRegister.addEventListener('click', showRegisterForm);
+            showLogin.addEventListener('click', showLoginForm);
+            loginFormElement.addEventListener('submit', handleLogin);
+            registerFormElement.addEventListener('submit', handleRegister);
+            homeLink.addEventListener('click', showHome);
+            watchNowBtn.addEventListener('click', openPlayer);
+            closePlayer.addEventListener('click', closePlayerView);
+            
+            // Set up stream source buttons
+            streamButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    streamButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    // Change stream source
+                    currentStreamSource = this.getAttribute('data-source');
+                    updatePlayerSource();
+                });
+            });
+            
+            // Set up search
+            searchInput.addEventListener('input', handleSearch);
+            
+            // Fetch initial data
+            fetchMovies();
+            
+            // Start featured carousel
+            setInterval(rotateFeatured, 3000);
+        });
+        
+        // Show register form
+        function showRegisterForm() {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'flex';
+        }
+        
+        // Show login form
+        function showLoginForm() {
+            registerForm.style.display = 'none';
+            loginForm.style.display = 'flex';
+        }
+        
+        // Handle login
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (email && password) {
+                currentUser = {
+                    email: email,
+                    name: email.split('@')[0]
+                };
+                
+                loginForm.style.display = 'none';
+                mainApp.style.display = 'block';
+            }
+        }
+        
+        // Handle registration
+        function handleRegister(e) {
+            e.preventDefault();
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Simple validation
+            if (email && password && password === confirmPassword) {
+                currentUser = {
+                    email: email,
+                    name: email.split('@')[0]
+                };
+                
+                registerForm.style.display = 'none';
+                mainApp.style.display = 'block';
+            }
+        }
+        
+        // Show home screen
+        function showHome() {
+            mainApp.style.display = 'block';
+            playerContainer.style.display = 'none';
+        }
+        
+        // Fetch movies from API
+        async function fetchMovies() {
+            try {
+                // Fetch trending movies
+                const trendingResponse = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
+                const trendingData = await trendingResponse.json();
+                featuredMovies = trendingData.results.slice(0, 5);
+                renderFeaturedMovie();
+                
+                // Fetch Disney movies
+                const disneyResponse = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=Disney`);
+                const disneyData = await disneyResponse.json();
+                disneyMovies = disneyData.results.filter(movie => movie.poster_path).slice(0, 12);
+                renderDisneyOriginals();
+                renderTrendingNow();
+            } catch (error) {
+                console.error('Error fetching movies:', error);
+            }
+        }
+        
+        // Render featured movie
+        function renderFeaturedMovie() {
+            if (featuredMovies.length > 0) {
+                const movie = featuredMovies[featuredIndex];
+                document.getElementById('heroImage').src = `${IMAGE_BASE_URL}${movie.backdrop_path}`;
+                document.getElementById('heroTitle').textContent = movie.title;
+                document.getElementById('heroRating').textContent = `${Math.round(movie.vote_average * 10)}% Match`;
+                document.getElementById('heroYear').textContent = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
+                document.getElementById('heroDescription').textContent = movie.overview;
+            }
+        }
+        
+        // Rotate featured movie
+        function rotateFeatured() {
+            if (featuredMovies.length > 0) {
+                featuredIndex = (featuredIndex + 1) % featuredMovies.length;
+                renderFeaturedMovie();
+            }
+        }
+        
+        // Render Disney Originals
+        function renderDisneyOriginals() {
+            const container = document.getElementById('disneyOriginals');
+            container.innerHTML = '';
+            
+            disneyMovies.forEach(movie => {
+                const card = createMovieCard(movie);
+                container.appendChild(card);
+            });
+        }
+        
+        // Render Trending Now
+        function renderTrendingNow() {
+            const container = document.getElementById('trendingNow');
+            container.innerHTML = '';
+            
+            featuredMovies.forEach(movie => {
+                const card = createMovieCard(movie);
+                container.appendChild(card);
+            });
+        }
+        
+        // Create movie card element
+        function createMovieCard(movie) {
+            const card = document.createElement('div');
+            card.className = 'content-card';
+            card.innerHTML = `
+                <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
+                <div class="content-overlay">
+                    <i class="fas fa-play"></i>
+                </div>
+                <div class="content-info">
+                    <div class="content-title">${movie.title}</div>
+                    <div class="content-rating">
+                        <i class="fas fa-star"></i>
+                        <span>${movie.vote_average.toFixed(1)}</span>
+                    </div>
+                </div>
+            `;
+            
+            // Add click event to open player
+            card.addEventListener('click', () => {
+                selectedMovie = movie;
+                openPlayer();
+            });
+            
+            return card;
+        }
+        
+        // Open player view
+        function openPlayer() {
+            if (!selectedMovie) return;
+            
+            document.getElementById('playerTitle').textContent = selectedMovie.title;
+            updatePlayerSource();
+            mainApp.style.display = 'none';
+            playerContainer.style.display = 'block';
+        }
+        
+        // Update player source based on selected stream
+        function updatePlayerSource() {
+            if (!selectedMovie) return;
+            
+            let src = '';
+            
+            switch(currentStreamSource) {
+                case 'vidsrc':
+                    src = `https://vidsrc.me/embed/${selectedMovie.id}`;
+                    break;
+                case '2embed':
+                    src = `https://www.2embed.ru/embed/tmdb/movie?id=${selectedMovie.id}`;
+                    break;
+                case 'youtube':
+                    src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(selectedMovie.title + ' trailer')}`;
+                    break;
+                default:
+                    src = `https://vidsrc.me/embed/${selectedMovie.id}`;
+            }
+            
+            document.getElementById('videoFrame').src = src;
+        }
+        
+        // Close player view
+        function closePlayerView() {
+            playerContainer.style.display = 'none';
+            mainApp.style.display = 'block';
+            document.getElementById('videoFrame').src = '';
+        }
+        
+        // Handle search
+        function handleSearch() {
+            const query = searchInput.value.toLowerCase();
+            
+            if (query.length > 2) {
+                // Filter movies based on search query
+                const filteredDisney = disneyMovies.filter(movie => 
+                    movie.title.toLowerCase().includes(query)
+                );
+                
+                const filteredTrending = featuredMovies.filter(movie => 
+                    movie.title.toLowerCase().includes(query)
+                );
+                
+                // Update displayed movies
+                const container = document.getElementById('disneyOriginals');
+                container.innerHTML = '';
+                
+                if (filteredDisney.length > 0) {
+                    filteredDisney.forEach(movie => {
+                        const card = createMovieCard(movie);
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p>No Disney movies found</p>';
+                }
+                
+                const trendingContainer = document.getElementById('trendingNow');
+                trendingContainer.innerHTML = '';
+                
+                if (filteredTrending.length > 0) {
+                    filteredTrending.forEach(movie => {
+                        const card = createMovieCard(movie);
+                        trendingContainer.appendChild(card);
+                    });
+                } else {
+                    trendingContainer.innerHTML = '<p>No trending movies found</p>';
+                }
+            } else {
+                // Reset to original lists
+                renderDisneyOriginals();
+                renderTrendingNow();
+            }
+        }
+    </script>
+</body>
+</html>
